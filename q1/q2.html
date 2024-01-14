@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link href="q2.css" rel="stylesheet" />
+
+</head>
+<body>
+
+    <script>
+
+        class Duck {
+            constructor(name, color, age, weight, picture) {
+                this.name = name;
+                this.color = color;
+                this.age = age;
+                this.weight = weight;
+                this.picture = picture;
+
+            };
+
+            static Show() {
+
+                document.getElementById("quackDiv").style.display = "none";
+                  document.getElementById("dataDuck").style.display = "block";
+               
+            };
+
+            static Quack() {
+                document.getElementById("dataDuck").style.display = "none";
+                document.getElementById("quackDiv").style.display = "block";
+                let mySound = new Audio("quack.wav");          
+                mySound.play();
+                mySound.play();
+                mySound.play();
+                
+
+            };
+
+
+        }
+       
+        function myFunction() {
+            document.getElementById("dataDuck").style.display = "none";
+           
+            /*get duck detailes*/
+            dname = document.getElementById("name").value;
+            dcolor = document.getElementById("color").value;
+            dage = document.getElementById("age").value;
+            dweight = document.getElementById("weight").value;
+            dpicture = document.getElementById("picture").value;
+            myDuck = new Duck(dname, dcolor, dage, dweight, dpicture);
+           
+            document.getElementById("show").style.display = "block";
+            document.getElementById("quack").style.display = "block";
+            var form = document.getElementById("myForm");
+            /** The fuction prevent the refresh of the page*/
+            function submitForm(event) {
+                event.preventDefault();
+                document.getElementById("myForm").reset();
+               
+            }
+            form.addEventListener('submit', submitForm);
+
+            
+
+                str = `<div class="card">
+                <img class="card-img-top" src=${dpicture} alt="Card image">
+                <div class="card-body">
+                    <h4 class="card-title">${myDuck.name}</h4>
+                    <p class="card-text">
+                    Color:${myDuck.color}
+                    <br/>
+                    Weihgt:${myDuck.weight}
+                     <br/>
+                     Age:${myDuck.age};
+                    </p>
+                    <a href="#" class="btn btn-primary">See Profile</a>
+                </div>
+            </div>`;
+
+
+                document.getElementById("dataDuck").innerHTML = str;
+
+            amount = myDuck.age * myDuck.weight;
+
+            str1 = `<p>`;
+
+            for (var i = 0; i < amount; i++) {
+
+                str1 += " quack";
+            }
+
+
+            str1+=`</p >`;
+            
+            document.getElementById("quackDiv").innerHTML = str1;
+            alert("The Duck details has been collected sucssefuly");
+        }
+        
+    </script>
+
+
+
+
+    <div class="jumbotron"> <h1 style="text-align:center">My Duck</h1></div>
+
+    <div class="row">
+        <div class="col-4">
+            
+            
+        </div>
+        <div class="col-4">
+
+            <form id="myForm">
+                <div class="form-group">
+                    <label for="name">name:</label>
+                    <input type="text" class="form-control" placeholder="Enter name" id="name">
+                </div>
+                <div class="form-group">
+                    <label for="color">Color:</label>
+                    <input type="text" class="form-control" placeholder="Enter color" id="color">
+                </div>
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="text" class="form-control" placeholder="Enter age" id="age">
+                </div>
+                <div class="form-group">
+                    <label for="weight">Weight:</label>
+                    <input type="text" class="form-control" placeholder="Enter weight" id="weight">
+                </div>
+                <div class="form-group">
+                    <label for="Picture">upload picture</label>
+                    <input type="file" class="form-control" id="picture">
+                </div>
+               
+               
+                <div class="row">
+
+                    <div class="col-4">
+
+                      <button type="submit" class="btn btn-primary" onclick="myFunction()">Submit</button>
+
+                    </div>
+                    <div class="col-4">
+                        <button id="quack" class="btn btn-primary" onclick="Duck.Quack()">Quack</button>
+                    </div>
+                    <div class="col-4">
+                        <button id="show" class="btn btn-primary" onclick="Duck.Show()">Show</button>
+                    </div>
+
+                </div>
+
+            </form>
+           
+        </div>
+        <div class="col-4"></div>
+
+
+    </div>
+ <br/>
+
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <div id="dataDuck">
+
+
+
+            </div>  
+            <div id="quackDiv"></div>
+        </div>
+        <div class="col-4"></div>
+        
+    </div>
+
+</body>
+</html>

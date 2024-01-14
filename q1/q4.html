@@ -1,0 +1,204 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+
+	<!-- Popper JS -->
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+</head>
+<body>
+
+
+	<div class="jumbotron jumbotron-fluid">
+		<div class="container">
+			<h1 class="display-4">Graph</h1>
+		</div>
+	</div>
+
+	<div class="row">
+
+		<canvas id="myCanvas" width="800" height="400" style="border:1px solid grey;"></canvas>
+
+	</div>
+
+	<br />
+	<div class="row">
+
+		<form id="myForm">
+			<div class="form-row align-items-center">
+				<div class="col-sm-3 my-1">
+
+					<input type="text" class="form-control" id="x" placeholder="Enter x">
+				</div>
+				<div class="col-sm-3 my-1">
+					<input type="text" class="form-control" id="y" placeholder="Enter Y">
+				</div>
+				<div class="col-auto my-1">
+					<button type="submit" class="btn btn-primary" onclick="Insertpoint()">Submit</button>
+				</div>
+			</div>
+		</form>
+
+		<div class="form-group row">
+			<label for="totD" class="col-sm-4 col-form-label">Total distace</label>
+			<div class="col-sm-8">
+				<input type="text" class="form-control" id="totD" placeholder="Total Distace">
+			</div>
+
+		</div>
+	</div>
+
+	<div id="dataPoint" class="row"></div>
+
+	<script>
+
+        xValues = [];
+        yValues = [];
+        pointsArr = [];
+        totalDistace = 0.01;
+
+        const canvas = document.getElementById("myCanvas");
+         ctx = canvas.getContext("2d");
+        // Define a new path:
+        ctx.beginPath();
+
+        // Define a start point
+       
+
+
+		class Point {
+
+			constructor(xPoint, yPoint) {
+				this.xPoint = xPoint;
+				this.yPoint = yPoint;
+
+			}
+			Show() {
+				return `(x,y):(${this.xPoint},${this.yPoint})`;
+			}
+
+			Equals(p) {
+				if (p.xPoint == this.xPoint && this.yPoint == p.yPoint) {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+
+		}
+
+		function Insertpoint() {
+			/* Create an object*/
+			newX = parseFloat(document.getElementById("x").value + ".0000001");
+			newY = parseFloat(document.getElementById("y").value + ".0000001");
+			var point = new Point(newX, newY);
+			/**Check if not exist this point in the arry */
+			if (ValidPoint(point, pointsArr) == false) {
+				xValues.push(newX);
+				yValues.push(newY);
+				len = pointsArr.length;
+				if (len > 0) {
+					totalDistace += Math.sqrt(Math.pow(newX - pointsArr[len - 1].xPoint, 2) + Math.pow(newY - pointsArr[len - 1].yPoint, 2));
+					document.getElementById("totD").value = totalDistace;
+					ctx.lineTo(0 + (10 * newX), (-1) * ((10 * newY) - 400));
+                    ctx.stroke();
+				}
+				else {
+                    ctx.moveTo(0 + (10 * newX), (-1) * ((10 * newY) - 400));
+                    
+				}
+				
+				
+
+
+
+				pointsArr.push(point);
+				alert("The point add successfuly to the arry");
+				str1 = `<table class="table">
+							<thead>
+							   <tr>
+								<th scope="col">#</th>
+								 <th scope="col">(x,y)</th>
+								 </tr>
+								  </thead><tbody>`;
+				for (var i = 0; i < pointsArr.length; i++) {
+
+					str1 += `<tr>
+								<th scope="row">${i + 1}</th>
+								<td>${pointsArr[i].Show()}</td>
+								</tr>`;
+				}
+				str1 += `</tbody></table>`;
+
+				document.getElementById("dataPoint").innerHTML = str1;
+               /* UpdateChart(char,newX, newX);*/
+
+			}
+			else {
+				alert("The point not add successfuly to the arry");
+			}
+			var form = document.getElementById("myForm");
+			/** The fuction prevent the refresh of the page*/
+			function submitForm(event) {
+				event.preventDefault();
+				document.getElementById("myForm").reset();
+
+			}
+			form.addEventListener('submit', submitForm);
+
+		};
+
+		/*The function valid if the point in the arry by x,y  points not object */
+		function CheckPoints(x, y, pArr) {
+
+			valid = false
+			for (var i = 0; i < pArr.length; i++) {
+
+				if (x == pArr[i].xPoint && y == pArr[i].yPoint) {
+					valid = true;
+					return valid;
+					alert("The point all ready in the points Arry");
+				}
+
+
+			}
+			if (valid == false) {
+				return valid;
+			}
+
+		}
+		/*The function valid if the point in the arry */
+		function ValidPoint(point, arrP) {
+
+			val = false;
+			for (var j = 0; j < arrP.length; j++) {
+
+				if (point.Equals(arrP[j]) == true) {
+					val = true;
+					return val;
+				}
+			}
+			if (val == false) {
+				return val;
+			}
+		}
+
+
+	</script>
+
+
+</body>
+
+</html>
